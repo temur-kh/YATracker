@@ -11,20 +11,20 @@ from .roles import ROLES
 class UserManager(PolymorphicManager, BaseUserManager):
     use_in_migrations = True
 
-    def create_user(self, email, password, **required_args):
+    def create_user(self, email, password=None, **required_args):
         if not email or not password:
             raise ValueError("Users must have an email and password")
 
         user = self.model(email=email, **required_args)
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
 
     def create_superuser(self, email, password, **required_args):
         user = self.create_user(email, password, **required_args)
         user.is_superuser = True
         user.is_staff = True
-        user.save()
+        user.save(using=self._db)
         return user
 
 
@@ -45,7 +45,7 @@ class User(PolymorphicModel, AbstractBaseUser):
 
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
-    is_active = True
+    is_active = models.BooleanField(default=True)
 
     @classmethod
     def create(cls, **kwargs):
