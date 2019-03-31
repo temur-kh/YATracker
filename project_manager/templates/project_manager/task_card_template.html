@@ -1,0 +1,17 @@
+<div class="card text-center" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ task.title }}</h5>
+        <p class="card-text">{{ task.desctiption }}</p>
+        {% if task.status == "in progress" %}
+            <a href="#" class="btn btn-primary">Finish</a>
+        {% elif task.status == "TODO" %}
+            <a href="#" class="btn btn-primary">Start</a>
+        {% else %}
+            <div class="btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-secondary active">
+                    <input type="checkbox" checked autocomplete="off"> Checked
+                </label>
+            </div>
+        {% endif %}
+    </div>
+</div>
