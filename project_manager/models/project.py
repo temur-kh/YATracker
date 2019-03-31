@@ -34,10 +34,24 @@ class Task(models.Model):
     description = models.TextField()
     status = models.CharField(max_length=4, choices=STATUS)
     members = models.ManyToManyField(Student, related_name='tasks')
-    start_time = models.DateTimeField(null=True, blank=True)
-    finish_time = models.DateTimeField(null=True, blank=True)
     project = models.ForeignKey(
         Project,
         related_name='tasks',
         on_delete=models.CASCADE,
     )
+
+
+class TimeLog(models.Model):
+    user = models.ForeignKey(
+        Student,
+        related_name='logs',
+        on_delete=models.CASCADE,
+    )
+    task = models.ForeignKey(
+        Task,
+        related_name='logs',
+        on_delete=models.CASCADE
+    )
+    is_active = models.BooleanField(default=False)
+    start_time = models.DateTimeField(null=True, blank=True)
+    finish_time = models.DateTimeField(null=True, blank=True)
