@@ -1,9 +1,9 @@
 {% extends 'yatracker/base.html' %}
 {% block content %}
 <ul class="list-group">
-  <li class="list-group-item">{{ User.name }}</li>
-  <li class="list-group-item">{{ User.surname }}</li>
-  <li class="list-group-item">{{ User.email }}</li>
-  <li class="list-group-item">{{ User.user_type }}</li>
+  <li class="list-group-item">{{ user.name }}</li>
+  <li class="list-group-item">{{ user.surname }}</li>
+  <li class="list-group-item">{{ user.email }}</li>
+  <li class="list-group-item">{{ user.get_user_type_display }}</li>
 </ul>
 {% endblock %}

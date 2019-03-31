@@ -19,4 +19,5 @@ def require_authorized(function):
 
 @require_authorized
 def personal(request):
-    return render(request, 'user_manager/account.html')
+    user = User.objects.get(pk=request.user.id)
+    return render(request, 'user_manager/account.html', {'user': user})

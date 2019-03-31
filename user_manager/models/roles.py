@@ -1,5 +1,5 @@
 ROLES = (
-        ('adm', 'admin'),
-        ('stu', 'student'),
-        ('ins', 'instructor'),
+        ('adm', 'Admin'),
+        ('stu', 'Student'),
+        ('ins', 'Instructor'),
         )
