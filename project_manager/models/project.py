@@ -5,6 +5,7 @@ from user_manager.models import (
     Student,
     Instructor,
 )
+from .status import STATUS
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -24,3 +25,19 @@ class Project(models.Model):
     def get_absolute_url(self):
         return reverse('project', kwargs={'id': self.id})
 
+    def __str__(self):
+        return self.title
+
+
+class Task(models.Model):
+    title = models.CharField(max_length=128)
+    description = models.TextField()
+    status = models.CharField(max_length=4, choices=STATUS)
+    members = models.ManyToManyField(Student, related_name='tasks')
+    start_time = models.DateTimeField(null=True, blank=True)
+    finish_time = models.DateTimeField(null=True, blank=True)
+    project = models.ForeignKey(
+        Project,
+        related_name='tasks',
+        on_delete=models.CASCADE,
+    )

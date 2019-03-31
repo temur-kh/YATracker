@@ -1,6 +1,6 @@
 {% extends 'yatracker/base.html' %}
 {% block content %}
-    <h1>{{ project.name }}<span class="badge badge-secondary">Project</span></h1>
+    <h1>{{ project.title }}<span class="badge badge-secondary">Project</span></h1>
     <p class="card-text">{{ project.description }}</p>
     <button type="button" class="btn btn-info">Edit</button>
     <div class="card" style="width: 18rem;">
@@ -8,10 +8,14 @@
             Project members
         </div>
         <ul class="list-group list-group-flush">
-            {% for student in project.students %}
+            {% for student in project.students.all %}
                 <a href="#" class="btn btn-link" role="button" aria-pressed="true">{{ student.name}} {{student.surname }}</a>
             {% endfor %}
         </ul>
     </div>
-{#    task representation here  #}
+    <div>
+        {% for task in project.tasks.all %}
+            {%  include 'project_manager/task_card_template.html' %}
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -38,7 +38,6 @@ def project_view(request, id):
     user = User.objects.get(pk=request.user.id)
     project = Project.objects.get(pk=id)
     if project.students.filter(pk=user.id).exists() or project.instructor.id == user.id:
-        return render(request, 'project_manager/project_page.html',
-                      {'project': project})  # waiting for project.html implementation
+        return render(request, 'project_manager/project_page.html', {'project': project})
     else:
         return HttpResponseRedirect(reverse('dashboard'))
