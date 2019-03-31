@@ -8,6 +8,7 @@ from django.http import (
 )
 
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
 
 
@@ -16,27 +17,33 @@ def require_authorized(function):
         if not request.user.is_authenticated:
             return HttpResponseRedirect(reverse('login'))
         return function(request, *args, **kwargs)
+
     return wrapper
 
 
-@require_authorized
+# @require_authorized
 def index(request):
     user = User.objects.get(pk=request.user.id)
-    projects = Project.objects.filter(
-            Q(students__pk=user.pk) |
-            Q(instructor__pk=user.pk)
-    ).distinct()
+    projects = Project.objects.distinct()
+
+    # todo: poka ne robit s filtrom. bez filtra robit no ne pishet userof..
+
+    # projects = Project.objects.filter(
+    #     Q(students__pk=user.pk) |
+    #     Q(instructor__pk=user.pk)
+    # ).distinct()
     user = {'id': request.user.id, 'name': request.user.get_full_name()}
     projects = [
-            {
+        {
             'title': project.title,
             'description': project.description,
             'instructor': project.instructor.get_full_name(),
-            }
-            for project in projects
+        }
+        for project in projects
     ]
-    return render(request, 'project_manager/dashboard.html',
+    return render(request, 'project_manager/project.html',
                   {'projects': projects, 'user': user})
+
 
 
 #TODO
