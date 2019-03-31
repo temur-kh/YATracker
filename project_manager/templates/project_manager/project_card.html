@@ -14,9 +14,7 @@
         <div class="card-text">User name: {{ user.name }}</div>
         <div class="d-flex justify-content-between align-items-center">
             <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                <a href="{{ project.get_absolute_url }}" class="btn btn-sm btn-outline-secondary">View</a>
             </div>
-            <!--Optional: Specify the time a person has spent on a project/task-->
-            {#            <small class="text-muted" aria-label="time spent">Time spent: {{ project.time_spent }} h.</small>#}
         </div>
     </div>

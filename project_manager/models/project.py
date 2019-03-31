@@ -1,4 +1,6 @@
 from django.db import models
+from django.shortcuts import reverse
+
 from user_manager.models import (
     Student,
     Instructor,
@@ -18,4 +20,7 @@ class Project(models.Model):
         on_delete=models.SET_NULL,
         null=True,
     )
+
+    def get_absolute_url(self):
+        return reverse('project', kwargs={'id': self.id})
 
