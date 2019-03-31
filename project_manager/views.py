@@ -21,41 +21,24 @@ def require_authorized(function):
     return wrapper
 
 
-# @require_authorized
+@require_authorized
 def index(request):
     user = User.objects.get(pk=request.user.id)
-    projects = Project.objects.distinct()
 
-    # todo: poka ne robit s filtrom. bez filtra robit no ne pishet userof..
-
-    # projects = Project.objects.filter(
-    #     Q(students__pk=user.pk) |
-    #     Q(instructor__pk=user.pk)
-    # ).distinct()
-    user = {'id': request.user.id, 'name': request.user.get_full_name()}
-    projects = [
-        {
-            'title': project.title,
-            'description': project.description,
-            'instructor': project.instructor.get_full_name(),
-        }
-        for project in projects
-    ]
-    return render(request, 'project_manager/project.html',
+    projects = Project.objects.filter(
+        Q(students__pk=user.pk) |
+        Q(instructor__pk=user.pk)
+    ).distinct()
+    return render(request, 'project_manager/dashboard.html',
                   {'projects': projects, 'user': user})
 
 
-
-#TODO
 @require_authorized
-def add_student(request):
+def project_view(request, id):
     user = User.objects.get(pk=request.user.id)
-    try:
-        doc = Document.objects.get(pk=id)
-    except Document.DoesNotExist:
-        return HttpResponse('No such book')
+    project = Project.objects.get(pk=id)
+    if project.students.filter(pk=user.id).exists() or project.instructor.filter(pk=user.id).exists():
+        return render(request, 'project_manager/project_page.html',
+                      {'project': project})  # waiting for project.html implementation
     else:
-        if doc.return_doc(user):
-            return HttpResponseRedirect(reverse('my_books'))
-        else:
-            return HttpResponse('You do not have this doc')
+        return HttpResponseRedirect(reverse('dashboard'))
