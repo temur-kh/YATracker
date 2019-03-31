@@ -13,8 +13,9 @@
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
                         <span>
-                            {% block project %}
-                            {% endblock %}
+                            {% for project in projects %}
+                                {% include 'project_manager/project_card.html' %}
+                            {% endfor %}
                         </span>
                         </div>
                     </div>
@@ -25,4 +26,3 @@
         </div>
     </div>
 {% endblock %}
-
