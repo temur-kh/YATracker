@@ -40,8 +40,14 @@ class Task(models.Model):
         on_delete=models.CASCADE,
     )
 
-    def get_absolute_url(self):
-        return reverse('task_to_progress', kwargs={'id': self.id})
+    def get_done_url(self):
+        return reverse('task_to_done', kwargs={'id': self.id})
+
+    def get_started_url(self):
+        return reverse('task_to_started', kwargs={'id': self.id})
+
+    def get_paused_url(self):
+        return reverse('task_to_paused', kwargs={'id': self.id})
 
 
 class TimeLog(models.Model):
