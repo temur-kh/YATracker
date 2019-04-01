@@ -63,12 +63,12 @@ def to_progress(request, id):
 def start_task(request, task_id):
     task = Task.objects.get(id=task_id)
     user = User.objects.get(pk=request.user.id)
-    log = TimeLog.objects.get(user=user, task=task, is_active=True)
-    if log is None:
-        log = TimeLog(user=user, task=task)
+    log = TimeLog(user=user, task=task)
     log.start_time = datetime.now()
     log.is_active = True
     log.save()
+    task.status = "prog"
+    task.save()
     project = task.project
     return render(request, 'project_manager/project_page.html', {'project': project})
 
@@ -81,6 +81,8 @@ def pause_task(request, task_id):
     log.finish_time = datetime.now()
     log.is_active = False
     log.save()
+    task.status = "paus"
+    task.save()
     project = task.project
     return render(request, 'project_manager/project_page.html', {'project': project})
 
@@ -89,10 +91,14 @@ def pause_task(request, task_id):
 def to_done(request, task_id):
     task = Task.objects.get(id=task_id)
     user = User.objects.get(pk=request.user.id)
-    log = TimeLog.objects.get(user=user, task=task, is_active=True)
-    if log is not None:
+    try:
+        log = TimeLog.objects.get(user=user, task=task, is_active=True)
         log.finish_time = datetime.now()
         log.is_active = False
         log.save()
+    except ObjectDoesNotExist:
+        pass
+    task.status = "done"
+    task.save()
     project = task.project
     return render(request, 'project_manager/project_page.html', {'project': project})
