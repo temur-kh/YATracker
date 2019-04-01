@@ -40,6 +40,9 @@ class Task(models.Model):
         on_delete=models.CASCADE,
     )
 
+    def get_absolute_url(self):
+        return reverse('task_to_progress', kwargs={'id': self.id})
+
 
 class TimeLog(models.Model):
     user = models.ForeignKey(
