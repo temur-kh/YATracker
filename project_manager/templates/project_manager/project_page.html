@@ -2,8 +2,10 @@
 {% block content %}
     <h1>{{ project.title }}<span class="badge badge-secondary">Project</span></h1>
     <p class="card-text">{{ project.description }}</p>
-    <button type="button" class="btn btn-info">Edit</button>
-    <div class="card" style="width: 18rem;">
+            <a href="{% url 'modify_project' project.id %}">
+            <button class="btn btn-info">Edit</button>
+        </a>
+    <div class="card float-right" style="width: 18rem;">
         <div class="card-header">
             Project members
         </div>
