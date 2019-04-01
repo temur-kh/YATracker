@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Project, Task, TimeLog
 from django.shortcuts import render
 from django.urls import reverse
@@ -45,13 +46,13 @@ def project_view(request, id):
 
 
 @require_authorized
-def to_progress(request, task_id):
-    task = Task.objects.get(id=task_id)
+def to_progress(request, id):
+    task = Task.objects.get(id=id)
     user = User.objects.get(pk=request.user.id)
-    log = TimeLog.objects.get(user=user, task=task, is_active=True)
-    if log is not None:
+    try:
+        log = TimeLog.objects.get(user=user, task=task, is_active=True)
         log.finish_time = datetime.now()
-    else:
+    except ObjectDoesNotExist:
         log = TimeLog(user=user, task=task)
     log.save()
     project = task.project
