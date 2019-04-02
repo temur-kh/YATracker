@@ -5,13 +5,14 @@
     <a href="{% url 'modify_project' project.id %}">
         <button class="btn btn-info">Edit</button>
     </a>
+    <br>
     <div class="card float-right" style="width: 18rem;">
         <div class="card-header">
             Project instructor
         </div>
         <ul class="list-group list-group-flush">
-                <a href="#" class="btn btn-link" role="button"
-                   aria-pressed="true">{{ project.instructor.name }} {{ project.instructor.surname }}</a>
+            <a href="#" class="btn btn-link" role="button"
+               aria-pressed="true">{{ project.instructor.name }} {{ project.instructor.surname }}</a>
         </ul>
 
         <div class="card-header">
@@ -24,9 +25,33 @@
             {% endfor %}
         </ul>
     </div>
+    <br>
     <div>
         {% for task in project.tasks.all %}
             {% include 'project_manager/task_card_template.html' %}
         {% endfor %}
+        <div class="card text-center" style="width: 18rem;">
+            <div class="card-body">
+                <div class="">
+                    <label class="sr-only" for="inlineFormInputGroup">Title</label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Title</div>
+                        </div>
+                        <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Task title here">
+                    </div>
+                </div>
+                <div class="">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Info</span>
+                        </div>
+                        <textarea class="form-control" aria-label="With textarea" placeholder="Your description here"></textarea>
+                    </div>
+                </div>
+                <br>
+                <a href="#" class="btn btn-primary">Add</a>
+            </div>
+        </div>
     </div>
 {% endblock %}
