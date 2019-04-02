@@ -13,7 +13,7 @@
             <a href="{{ task.get_started_url }}" class="btn btn-primary">Start</a>
             <a href="{{ task.get_done_url }}" class="btn btn-primary">Finish</a>
         {% else %}
-            <a href="#" class="btn btn-primary" disabled="">Done</a>
+            <button type="button" class="btn btn-secondary" disabled>Done</button>
         {% endif %}
 
     </div>

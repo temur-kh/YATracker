@@ -3,13 +3,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import Project, Task, TimeLog
 from django.shortcuts import render
 from django.urls import reverse
-from django.http import (
-    HttpResponseRedirect,
-    HttpResponse,
-)
+from django.http import HttpResponseRedirect
 from datetime import datetime
-
 from django.contrib.auth import get_user_model
+from user_manager.models import Student
 
 User = get_user_model()
 
@@ -60,8 +57,8 @@ def to_progress(request, id):
 
 
 @require_authorized
-def start_task(request, task_id):
-    task = Task.objects.get(id=task_id)
+def start_task(request, id):
+    task = Task.objects.get(id=id)
     user = User.objects.get(pk=request.user.id)
     log = TimeLog(user=user, task=task)
     log.start_time = datetime.now()
@@ -74,8 +71,8 @@ def start_task(request, task_id):
 
 
 @require_authorized
-def pause_task(request, task_id):
-    task = Task.objects.get(id=task_id)
+def pause_task(request, id):
+    task = Task.objects.get(id=id)
     user = User.objects.get(pk=request.user.id)
     log = TimeLog.objects.get(user=user, task=task, is_active=True)
     log.finish_time = datetime.now()
@@ -88,8 +85,8 @@ def pause_task(request, task_id):
 
 
 @require_authorized
-def to_done(request, task_id):
-    task = Task.objects.get(id=task_id)
+def to_done(request, id):
+    task = Task.objects.get(id=id)
     user = User.objects.get(pk=request.user.id)
     try:
         log = TimeLog.objects.get(user=user, task=task, is_active=True)
@@ -102,7 +99,6 @@ def to_done(request, task_id):
     task.save()
     project = task.project
     return render(request, 'project_manager/project_page.html', {'project': project})
-
 
 
 # modifications only to test frontend (modify_project)
