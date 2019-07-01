@@ -1,0 +1,65 @@
+{% extends 'yatracker/base.html' %}
+{% block title %}
+    Project modification
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="project_name"> Project title </label>
+                    <textarea class="form-control" rows="1" name="title" id="project_name" maxlength="128">{{ project.title }}</textarea>
+{#                    <input type="text" class="form-control" name="title" id="project_name" value={{ project.title }}>#}
+                </div>
+                <div class="form-group">
+                    <label for="project_description"> Project description </label>
+                    <textarea class="form-control" rows="3" name="description" id="project_description" maxlength="1024">{{ project.description }}</textarea>
+                </div>
+                Project instructor
+                <br>
+                <ul class="list-group">
+                    <li class="list-group-item">{{ project.instructor.name }} {{ project.instructor.surname }}</li>
+                </ul>
+                <br>
+                <div class="alert alert-success" role="alert">
+                  <h4 class="alert-heading">New Coming!</h4>
+                  <p>We have added the functionality to add/remove students in a project. Fill free to drop your students ;)</p>
+                </div>
+                Project participants
+                <br>
+                <ul class="list-group">
+                    {% for participant in participants %}
+                        <div class="input-group mb-0">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <input id="team" type="checkbox" name="team" value="{{ participant.id }}" checked>
+                            </div>
+                          </div>
+                            <label class = "form-control list-group-item">{{ participant.name }} {{ participant.surname }}</label>
+                        </div>
+                    {% endfor %}
+                </ul>
+
+                <br>
+                Other Students
+                <br>
+                <ul class="list-group">
+                    {% for participant in non_participants %}
+                        <div class="input-group mb-0">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <input type="checkbox" name="to_add" value="{{ participant.id }}">
+                            </div>
+                          </div>
+                            <label class = "form-control list-group-item">{{ participant.name }} {{ participant.surname }}</label>
+                        </div>
+                    {% endfor %}
+                </ul>
+                <br>
+                <button type="submit" class="btn btn-primary">Edit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
